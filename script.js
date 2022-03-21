@@ -149,18 +149,74 @@
 //2. Classes are first-class citizes
 //3. Classes are executed in strict mode
 
-const account = {
-  owner: 'josub',
-  movements: [200, 530, 120, 300],
+// const account = {
+//   owner: 'josub',
+//   movements: [200, 530, 120, 300],
 
-  get latest() {
-    return this.movements.pop();
+//   get latest() {
+//     return this.movements.pop();
+//   },
+
+//   set latest(mov) {
+//     this.movements.push(mov);
+//   },
+// };
+// console.log(account.latest);
+// account.latest = 50;
+// console.log(account.movements);
+
+const PersonProto = {
+  calcAge() {
+    console.log(2037 - this.birthYear);
   },
-
-  set latest(mov) {
-    this.movements.push(mov);
+  init(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
   },
 };
-console.log(account.latest);
-account.latest = 50;
-console.log(account.movements);
+const steven = Object.create(PersonProto);
+console.log(steven);
+steven.name = 'Steven';
+steven.birthYear = 2002;
+steven.calcAge();
+
+console.log(steven.__proto__ === PersonProto);
+const josub = Object.create(PersonProto);
+
+josub.init('Sarah', 1979);
+josub.calcAge();
+
+//Chanllange 2
+
+class calCL {
+  constructor(make, speed) {
+    this.make = make;
+    this.speed = speed;
+  }
+
+  accelerate() {
+    this.speed += 10;
+    console.log(`${this.make} is goiong at ${this.speed} km/h`);
+  }
+
+  break() {
+    this.speed -= 5;
+    console.log(`${this.make} is goiong at ${this.speed} km/h`);
+  }
+
+  get speedUS() {
+    return this.speed / 1.6;
+  }
+
+  set speedUS(speed) {
+    this.speed = speed * 1.6;
+  }
+}
+const ford = new calCL('Ford', 120);
+console.log(ford.speedUS);
+ford.accelerate();
+ford.accelerate();
+ford.accelerate();
+ford.break();
+ford.speedUS = 50;
+console.log(ford);
