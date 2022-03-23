@@ -163,60 +163,123 @@
 // };
 // console.log(account.latest);
 // account.latest = 50;
-// console.log(account.movements);
+// // console.log(account.movements);
 
-const PersonProto = {
-  calcAge() {
-    console.log(2037 - this.birthYear);
-  },
-  init(firstName, birthYear) {
-    this.firstName = firstName;
-    this.birthYear = birthYear;
-  },
+// const PersonProto = {
+//   calcAge() {
+//     console.log(2037 - this.birthYear);
+//   },
+//   init(firstName, birthYear) {
+//     this.firstName = firstName;
+//     this.birthYear = birthYear;
+//   },
+// };
+// const steven = Object.create(PersonProto);
+// console.log(steven);
+// steven.name = 'Steven';
+// steven.birthYear = 2002;
+// steven.calcAge();
+
+// console.log(steven.__proto__ === PersonProto);
+// const josub = Object.create(PersonProto);
+
+// josub.init('Sarah', 1979);
+// josub.calcAge();
+
+// //Chanllange 2
+
+// // class calCL {
+// //   constructor(make, speed) {
+// //     this.make = make;
+// //     this.speed = speed;
+// //   }
+
+// //   accelerate() {
+// //     this.speed += 10;
+// //     console.log(`${this.make} is goiong at ${this.speed} km/h`);
+// //   }
+
+// //   break() {
+// //     this.speed -= 5;
+// //     console.log(`${this.make} is goiong at ${this.speed} km/h`);
+// //   }
+
+// //   get speedUS() {
+// //     return this.speed / 1.6;
+// //   }
+
+// //   set speedUS(speed) {
+// //     this.speed = speed * 1.6;
+// //   }
+// // }
+// // const ford = new calCL('Ford', 120);
+// // console.log(ford.speedUS);
+// // ford.accelerate();
+// // ford.accelerate();
+// // ford.accelerate();
+// // ford.break();
+// // ford.speedUS = 50;
+// // console.log(ford);
+
+// const Person = function (firstName, birthYear) {
+//   this.firstName = firstName;
+//   this.birthYear = birthYear;
+// };
+// Person.prototype.calcAge = function () {
+//   console.log(2037 - this.birthYear);
+// };
+// const Student = function (firstName, birthYear, course) {
+//   Person.call(this, firstName, birthYear);
+//   this.course = course;
+// };
+// //Linking prototypes
+// Student.prototype = Object.create(Person.prototype);
+
+// Student.prototype.introduce = function () {
+//   console.log(`My name is ${this.firstName} and I study ${this.course}`);
+// };
+
+// const Josub = new Student('Josub', 2020, 'Front-end-developer');
+
+// console.log(Josub);
+// Josub.introduce();
+// Josub.calcAge();
+// console.log(Josub.__proto__);
+
+const Car = function (make, speed) {
+  this.make = make;
+  this.speed = speed;
 };
-const steven = Object.create(PersonProto);
-console.log(steven);
-steven.name = 'Steven';
-steven.birthYear = 2002;
-steven.calcAge();
+Car.prototype.acceleration = function () {
+  this.speed += 10;
+  console.log(`${this.make} is goiong at ${this.speed}Km/h`);
+};
+Car.prototype.brake = function () {
+  this.speed -= 5;
+  console.log(`${this.make} is goiong at ${this.speed}Km/h`);
+};
 
-console.log(steven.__proto__ === PersonProto);
-const josub = Object.create(PersonProto);
+const EV = function (make, speed, charge) {
+  Car.call(this, make, speed);
+  this.charge = charge;
+};
 
-josub.init('Sarah', 1979);
-josub.calcAge();
+//Link the Prototypes
+EV.prototype = Object.create(Car.prototype);
 
-//Chanllange 2
+EV.prototype.chargeBattery = function (chargeTo) {
+  this.charge = chargeTo;
+};
+EV.prototype.accelerate = function () {
+  this.speed += 20;
+  this.charge--;
+  console.log(
+    `${this.make} is goiong at ${this.speed}Km/h,with a charge of ${this.charge}`
+  );
+};
 
-class calCL {
-  constructor(make, speed) {
-    this.make = make;
-    this.speed = speed;
-  }
-
-  accelerate() {
-    this.speed += 10;
-    console.log(`${this.make} is goiong at ${this.speed} km/h`);
-  }
-
-  break() {
-    this.speed -= 5;
-    console.log(`${this.make} is goiong at ${this.speed} km/h`);
-  }
-
-  get speedUS() {
-    return this.speed / 1.6;
-  }
-
-  set speedUS(speed) {
-    this.speed = speed * 1.6;
-  }
-}
-const ford = new calCL('Ford', 120);
-console.log(ford.speedUS);
-ford.accelerate();
-ford.accelerate();
-ford.accelerate();
-ford.break();
-ford.speedUS = 50;
-console.log(ford);
+const tesla = new EV('Tesla', 120, 123);
+tesla.chargeBattery(90);
+console.log(tesla);
+tesla.brake();
+tesla.accelerate();
